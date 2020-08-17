@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Spyder Editor
+created on 4/8/2020
+author: kenarapfaik
 
-This is a temporary script file.
+url: https://github.com/arapfaik/scraping-glassdoor-selenium
 """
 
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException 
@@ -56,7 +57,8 @@ def get_jobs(keyword, num_jobs, verbose, path, slp_time):
             if len(jobs) >= num_jobs:
                 break
             
-            job_button.click()  #You might
+            #job_button.click()  #You might
+            driver.execute_script("arguments[0].click();", job_button)
             time.sleep(1)
             collected_successfully = False 
             
@@ -182,7 +184,9 @@ def get_jobs(keyword, num_jobs, verbose, path, slp_time):
             
         #clicking on the "next page" button
         try:
-            driver.find_element_by_xpath('.//li[@class="next"]//a').click()
+            #driver.find_element_by_xpath('.//li[@class="next"]//a').click()
+            next_button=driver.find_element_by_xpath('.//li[@class="next"]//a');
+            driver.execute_script("arguments[0].click();", next_button)
         except NoSuchElementException:
             print("Scaping terminated before reaching target number of jobs. Needed {}, got{}.".format(num_jobs, len(jobs)))
             break
