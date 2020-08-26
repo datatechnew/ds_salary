@@ -41,21 +41,22 @@ df.columns
 df = df[df['Salary Estimate'] != '-1']
 
 #extract the numeric values from salary Estimate 
-salary = df['Salary Estimate'].apply(lambda x: x.split('(')[0].replace('K', '').replace('$', ''))
+df['salary'] = df['Salary Estimate'].apply(lambda x: x.split('(')[0].replace('K', '').replace('$', ''))
 
 
 
 
-# 2.company name string only
-df['Company'] = df.apply(lambda x: x['Company Name'] if x['Rating'] < 1 else x['Company Name'][:-3], axis = 1)
+# df['Company'] = df.apply(lambda x: x['Company Name'] if x['Rating'] < 1 else x['Company Name'][:-3], axis = 1)
 
 
 
 #3.state parsing
-df['State'] = df['Location'].apply(lambda x: x[-2:])
+df['State'] = df['Location'].apply(lambda x: x.split(',')[1] if ',' in x else x) #x意义是 df［location］中的一行
+
+
 df['State'].value_counts()
 
-
+type(df['Location'])
 
 
 #4.company age engineering
@@ -70,8 +71,7 @@ df['aws']= df['Job Description'].apply(lambda x: 1 if 'aws' in x.lower() else 0)
 df['tableau']= df['Job Description'].apply(lambda x: 1 if 'tableau' in x.lower() else 0)
 df['spark']= df['Job Description'].apply(lambda x: 1 if 'spark' in x.lower() else 0)
 
-df.to_csv('data_cleaned', index= False)
-
+df.to_csv('data_cleaned.csv', index= False)
 
 
 
